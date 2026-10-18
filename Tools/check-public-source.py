@@ -21,6 +21,12 @@ ROOT_FILES = {
     ".gitignore", ".gitattributes", "LICENSE", "README.md", "README.zh-CN.md",
     "SECURITY.md", "CONTRIBUTING.md", "THIRD_PARTY_NOTICES.md", "build.sh",
 }
+PUBLIC_PNG_ASSETS = {
+    "Resources/Brand/ccmiss-logo.png",
+    "docs/images/account-workspace.png",
+    "docs/images/add-profile.png",
+    "docs/images/claude-code-tools.png",
+}
 DOC_NETS = tuple(ipaddress.ip_network(value) for value in
                 ("192.0.2.0/24", "198.51.100.0/24", "203.0.113.0/24", "2001:db8::/32"))
 PUBLIC_SERVICE_IPS = {"1.1.1.1", "1.0.0.1", "8.8.8.8", "9.9.9.9", "223.5.5.5", "160.79.104.0"}
@@ -54,7 +60,7 @@ def allowed(name: str) -> bool:
     if p.parts[0] == "Tools":
         return p.suffix in {".py", ".swift", ".sh"} or name == "Tools/dependencies.json"
     if p.parts[0] == "docs":
-        return p.suffix == ".md"
+        return p.suffix == ".md" or name in PUBLIC_PNG_ASSETS
     if p.parts[0] == ".github":
         return p.suffix in {".yml", ".yaml", ".md"}
     if p.parts[0] == "Resources":
@@ -85,9 +91,9 @@ def findings(name: str, data: bytes) -> list[tuple[int, str]]:
         result.append((1, "unexpected-file"))
     if len(data) > 2 * 1024 * 1024:
         result.append((1, "oversized-file"))
-    if name == "Resources/Brand/ccmiss-logo.png":
-        # Artwork is the sole binary source asset. Disallow embedded creator,
-        # location and provenance metadata; pixel data is retained unchanged.
+    if name in PUBLIC_PNG_ASSETS:
+        # Only explicitly reviewed branding and redacted documentation images
+        # may be published. Disallow creator, location and provenance metadata.
         if not data.startswith(b"\x89PNG\r\n\x1a\n"):
             return result + [(1, "invalid-artwork")]
         offset = 8

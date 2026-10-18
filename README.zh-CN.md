@@ -1,6 +1,8 @@
 # ccmiss
 
-<img src="Resources/Brand/ccmiss-logo.png" width="104" height="104" alt="ccmiss app icon">
+<p align="center">
+  <img src="Resources/Brand/ccmiss-logo.png" width="136" height="136" alt="ccmiss 应用 Logo">
+</p>
 
 **为 Claude 准备一个看得清、切得动的 macOS 网络环境。**
 
@@ -9,6 +11,31 @@
 环境检测、隐私设置、账号专属 SOCKS5 出口切换，一个轻量原生应用即可完成。ccmiss 将路由、DNS、浏览器 WebRTC 检查和 Claude 出口监测放在一起，让你在开始工作前，知道当前究竟启用了什么。
 
 **添加代理，初始化一次，按账号一键切换。**
+
+## 界面预览
+
+应用界面目前为简体中文，以下截图中的账号资料已打码。
+
+![ccmiss 账号工作区，账号资料已打码](docs/images/account-workspace.png)
+
+*账号工作区：在紧凑界面中查看网络状态、管理账号配置。*
+
+<details>
+<summary>展开查看：添加配置与 Claude Code 工具</summary>
+
+**添加 SOCKS5 配置**
+
+![ccmiss 添加 SOCKS5 账号配置，敏感资料已打码](docs/images/add-profile.png)
+
+*将代理链接、账号名称和描述保存在同一份配置中。*
+
+**Claude Code 工具**
+
+![ccmiss Claude Code 工具，用于本地对话备份与安装维护](docs/images/claude-code-tools.png)
+
+*查看本地对话备份，并按需主动执行维护。*
+
+</details>
 
 ## 能做什么
 

@@ -27,6 +27,10 @@
 !/Tools/dependencies.json
 !/docs/
 !/docs/*.md
+!/docs/images/
+!/docs/images/account-workspace.png
+!/docs/images/add-profile.png
+!/docs/images/claude-code-tools.png
 !/.github/
 !/.github/**/
 !/.github/**/*.yml

@@ -1,6 +1,8 @@
 # ccmiss
 
-<img src="Resources/Brand/ccmiss-logo.png" width="104" height="104" alt="ccmiss app icon">
+<p align="center">
+  <img src="Resources/Brand/ccmiss-logo.png" width="136" height="136" alt="ccmiss app logo">
+</p>
 
 **A clearer network environment for Claude on macOS.**
 
@@ -9,6 +11,31 @@
 Check your environment, configure privacy settings, and switch account-specific SOCKS5 exits from one small native app. ccmiss brings routing, DNS, browser WebRTC checks, and Claude exit monitoring into a single workflow—so you can see what is active before you start working.
 
 **Add a proxy. Prepare once. Switch when you need to.**
+
+## A look inside
+
+The app interface is currently in Simplified Chinese. Account details in these screenshots have been redacted.
+
+![ccmiss account workspace with account details redacted](docs/images/account-workspace.png)
+
+*Account workspace: network status and profile controls in one compact view.*
+
+<details>
+<summary>More screenshots: adding a profile and Claude Code tools</summary>
+
+**Add a SOCKS5 profile**
+
+![Add a SOCKS5 account profile in ccmiss, with sensitive details redacted](docs/images/add-profile.png)
+
+*Keep a proxy URL, account label, and description together in one profile.*
+
+**Claude Code tools**
+
+![ccmiss Claude Code tools for local conversation backups and installation maintenance](docs/images/claude-code-tools.png)
+
+*Browse local conversation backups and access user-initiated maintenance tools.*
+
+</details>
 
 ## What you get
 
