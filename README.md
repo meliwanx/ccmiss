@@ -1,14 +1,16 @@
-# ccmiss
+# ccmiss — Claude / Anthropic Anti-Ban Environment Toolkit
 
 <p align="center">
   <img src="Resources/Brand/ccmiss-logo.png" width="136" height="136" alt="ccmiss app logo">
 </p>
 
-**A clearer network environment for Claude on macOS.**
+**Network environment checks, privacy setup, and account-specific proxy switching on macOS.**
 
 [English](README.md) · [简体中文](README.zh-CN.md)
 
-Check your environment, configure privacy settings, and switch account-specific SOCKS5 exits from one small native app. ccmiss brings routing, DNS, browser WebRTC checks, and Claude exit monitoring into a single workflow—so you can see what is active before you start working.
+Built for Claude, Claude Code, and Anthropic services, ccmiss brings network environment checks, DNS/WebRTC privacy settings, Claude exit-IP monitoring, and per-account SOCKS5 switching into one small native app.
+
+**Anti-ban (防封号)** describes this environment-management workflow. ccmiss helps you inspect configuration and exit consistency; it does not predict Anthropic enforcement or guarantee protection from account restrictions. It has no IP reputation scoring service and is an independent project.
 
 **Add a proxy. Prepare once. Switch when you need to.**
 

@@ -1,14 +1,16 @@
-# ccmiss
+# ccmiss — Claude / Anthropic 防封号环境工具
 
 <p align="center">
   <img src="Resources/Brand/ccmiss-logo.png" width="136" height="136" alt="ccmiss 应用 Logo">
 </p>
 
-**为 Claude 准备一个看得清、切得动的 macOS 网络环境。**
+**环境检测、隐私配置、出口监控与账号代理一键切换。**
 
 [English](README.md) · [简体中文](README.zh-CN.md)
 
-环境检测、隐私设置、账号专属 SOCKS5 出口切换，一个轻量原生应用即可完成。ccmiss 将路由、DNS、浏览器 WebRTC 检查和 Claude 出口监测放在一起，让你在开始工作前，知道当前究竟启用了什么。
+面向 Claude、Claude Code 与 Anthropic 服务的 macOS 原生环境工具，提供网络环境检测、DNS/WebRTC 隐私配置、Claude 出口 IP 监控，以及按账号保存和一键切换 SOCKS5 配置。
+
+**Claude / Anthropic 防封号**用于描述上述环境管理用途。ccmiss 帮助排查配置与出口一致性，无法预测 Anthropic 的账号处置，也不保证避免封号或账号限制；不提供 IP 信誉评分，且为独立项目。
 
 **添加代理，初始化一次，按账号一键切换。**
 
