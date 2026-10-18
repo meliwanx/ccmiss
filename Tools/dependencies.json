@@ -1,0 +1,26 @@
+{
+  "platform": "darwin-arm64",
+  "node": {
+    "version": "24.17.0",
+    "archiveURL": "https://nodejs.org/dist/v24.17.0/node-v24.17.0-darwin-arm64.tar.gz",
+    "archiveSHA256": "4fc3266a3702eebc39cc37661cf4eeceeade307e242ab64e4d7ce7949197e11f",
+    "binarySHA256": "f5f9b9db4d95f5e0340982685f083de654c21eef9d9122cab5321081ccaa2601",
+    "checksumURL": "https://nodejs.org/dist/v24.17.0/SHASUMS256.txt",
+    "sourceURL": "https://nodejs.org/dist/v24.17.0/node-v24.17.0.tar.gz",
+    "sourceSHA256": "66a10e05fa7875ff1d7d669de405ea6ce8725f2352bd07550f520dea2f880825"
+  },
+  "mihomo": {
+    "version": "1.19.32",
+    "archiveURL": "https://github.com/MetaCubeX/mihomo/releases/download/v1.19.32/mihomo-darwin-arm64-v1.19.32.gz",
+    "archiveSHA256": "3312a6780652c622890fd4357c6a853bbf865464fd047ac7b7f52dab8de18652",
+    "binarySHA256": "94a386ec0149080deadd86b1f667363bde3c70f7489dba3258e52c56fc9a6d66",
+    "checksumURL": "https://api.github.com/repos/MetaCubeX/mihomo/releases/tags/v1.19.32",
+    "sourceURL": "https://codeload.github.com/MetaCubeX/mihomo/tar.gz/refs/tags/v1.19.32",
+    "sourceSHA256": "ab130b7fab3893d01aa44c0d39be34a26da716c1d36832fbac9fa054a1d862a0"
+  },
+  "js-yaml": {
+    "version": "4.1.0",
+    "sourceURL": "https://github.com/nodeca/js-yaml/tree/4.1.0",
+    "vendoredSHA256": "c738b0020702aa631abd8de23a902a3079d99d3060e44166955cb51f570881c4"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "version": "v1.19.32",
+  "source": "https://github.com/MetaCubeX/mihomo/tree/v1.19.32",
+  "assetURL": "https://github.com/MetaCubeX/mihomo/releases/download/v1.19.32/mihomo-darwin-arm64-v1.19.32.gz",
+  "archiveSHA256": "3312a6780652c622890fd4357c6a853bbf865464fd047ac7b7f52dab8de18652",
+  "binarySHA256": "94a386ec0149080deadd86b1f667363bde3c70f7489dba3258e52c56fc9a6d66",
+  "license": "GPL-3.0",
+  "sourceArchiveURL": "https://codeload.github.com/MetaCubeX/mihomo/tar.gz/refs/tags/v1.19.32",
+  "sourceArchiveSHA256": "ab130b7fab3893d01aa44c0d39be34a26da716c1d36832fbac9fa054a1d862a0"
+}

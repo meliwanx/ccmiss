@@ -1,0 +1,8 @@
+* text=auto
+*.swift text eol=lf
+*.js text eol=lf
+*.cjs text eol=lf
+*.sh text eol=lf
+*.md text eol=lf
+*.png binary
+.github export-ignore
