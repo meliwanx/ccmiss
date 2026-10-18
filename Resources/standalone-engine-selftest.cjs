@@ -47,7 +47,24 @@ async function systemProxyTests(){let assertions=0;
 }
 async function transactionTests(){
   const settings={version:1,additionalServiceDomains:['relay.example.com'],directRules:['PROCESS-NAME,微信,DIRECT','AND,((NETWORK,TCP),(DST-PORT,22),(DOMAIN,relay.example.com)),DIRECT','IP-CIDR,10.20.0.0/16,DIRECT,no-resolve'],nameserverPolicy:{'+.corp.example':['10.20.0.2']}};
-  for(const scope of ['servicesOnly','fullPublic']){const prepared=engine.buildConfiguration(profile(),scope,[],settings);engine.validateCore(engine.locations({dataDirectory:path.join(temporary,'validate')}),prepared.configuration);assert.equal(prepared.configuration.proxies.length,1);assert.equal(prepared.configuration.proxies[0].udp,false);assert.deepEqual(prepared.configuration['proxy-groups'][0].proxies,[engine.NODE_NAME]);assert.deepEqual(prepared.configuration.dns['nameserver-policy']['+.corp.example'],['10.20.0.2#DIRECT']);assert.deepEqual(prepared.configuration.rules.filter(rule=>rule.startsWith('DOMAIN-SUFFIX,')&&rule.endsWith(','+engine.GROUP_NAME)).map(rule=>rule.split(',')[1]),engine.SERVICE_DOMAINS.concat(settings.additionalServiceDomains));assert(prepared.configuration.rules.indexOf(settings.directRules[1])<prepared.configuration.rules.length-1);}
+  for(const scope of ['servicesOnly','fullPublic']) {
+    const prepared=engine.buildConfiguration(profile(),scope,[],settings),configuration=prepared.configuration,rules=configuration.rules;
+    engine.validateCore(engine.locations({dataDirectory:path.join(temporary,'validate')}),configuration);
+    assert.equal(configuration.proxies.length,1);assert.equal(configuration.proxies[0].udp,false);
+    assert.deepEqual(configuration['proxy-groups'][0].proxies,[engine.NODE_NAME]);
+    assert.deepEqual(configuration.dns['nameserver-policy']['+.corp.example'],['10.20.0.2#DIRECT']);
+    const routedDomains=rules.filter(rule=>rule.startsWith('DOMAIN-SUFFIX,')&&rule.endsWith(','+engine.GROUP_NAME)).map(rule=>rule.split(',')[1]);
+    if(scope==='servicesOnly') {
+      assert.deepEqual(routedDomains,engine.SERVICE_DOMAINS.concat(settings.additionalServiceDomains));
+      for(const domain of routedDomains)assert(rules.includes('AND,((NETWORK,UDP),(DOMAIN-SUFFIX,'+domain+')),REJECT'));
+      assert.equal(rules.at(-1),'MATCH,DIRECT');
+    } else {
+      assert.deepEqual(routedDomains,[]);
+      assert.deepEqual(rules.slice(-2),['NETWORK,UDP,REJECT','MATCH,'+engine.GROUP_NAME]);
+      assert.deepEqual(rules.filter(rule=>/^DOMAIN(?:-SUFFIX)?,.*?,DIRECT$/.test(rule)),['DOMAIN,localhost,DIRECT','DOMAIN-SUFFIX,local,DIRECT','DOMAIN-SUFFIX,lan,DIRECT']);
+    }
+    assert(rules.indexOf(settings.directRules[1])<rules.length-1);
+  }
   for(const bad of [{directRules:['MATCH,DIRECT']},{directRules:['GEOIP,CN,DIRECT']},{directRules:['DOMAIN,www.claude.ai,DIRECT']},{directRules:['AND,((NETWORK,TCP),(DOMAIN,claude.ai)),DIRECT']},{directRules:['AND,((NETWORK,TCP),(DST-PORT,443),(DOMAIN,claude.ai)),DIRECT']},{nameserverPolicy:{'+.corp.example':['8.8.8.8']}},{additionalServiceDomains:['http://bad.test']},{directRules:['AND,((NETWORK,TCP),(DST-PORT,22)),DIRECT']}])assert.throws(()=>engine.normalizeSettings(bad));
   assert.throws(()=>engine.buildConfiguration(profile(),'servicesOnly',[{type:'domainSuffix',value:'claude.ai'}]));
   assert.throws(()=>engine.parseSOCKS({...profile(),socksURL:'socks5://a:b@host.test:123/?bad=1'}));
