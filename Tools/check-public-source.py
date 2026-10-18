@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import argparse
 import ipaddress
+import os
 import pathlib
 import re
 import struct
@@ -138,10 +139,17 @@ def main() -> int:
     parser.add_argument("--history", action="store_true", help="scan every reachable commit too")
     args = parser.parse_args()
     try:
+        if pathlib.Path(git("rev-parse", "--show-toplevel").decode().strip()).resolve() != ROOT:
+            raise subprocess.CalledProcessError(1, "git repository boundary")
         names = sorted(set(git("ls-files", "--cached", "--others", "--exclude-standard", "-z").decode().split("\0")) - {""})
         commits = git("rev-list", "--all").decode().splitlines() if args.history else []
     except subprocess.CalledProcessError:
-        names = [str(p.relative_to(ROOT)) for p in ROOT.rglob("*") if p.is_file() and ".git" not in p.parts]
+        # Downloaded source archives have no Git history. Never inspect a parent
+        # workspace's repository, and omit the same local build directories.
+        names = []
+        for folder, directories, files in os.walk(ROOT):
+            directories[:] = [name for name in directories if name not in FORBIDDEN_PARTS | {".git", "__pycache__"}]
+            names.extend(str((pathlib.Path(folder) / name).relative_to(ROOT)) for name in files)
         commits = []
     errors = []
     for name in names:
