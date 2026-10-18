@@ -8,6 +8,8 @@ NODE_PATH="${ACCOUNT_PROXY_NODE:-$DEPS_DIR/node}"
 SIGN_IDENTITY="${ACCOUNT_PROXY_SIGN_IDENTITY:-}"
 TEAM_ID="${ACCOUNT_PROXY_TEAM_ID:-}"
 BUNDLE_ID="io.ccmiss.app"
+APP_VERSION="2.6.2"
+APP_BUILD="22"
 if [[ "$(uname -s)" != Darwin || "$(uname -m)" != arm64 ]]; then
   printf '%s\n' 'The current app build supports Apple Silicon macOS only.' >&2
   exit 1
@@ -73,7 +75,7 @@ codesign --force --options runtime --timestamp --sign "$SIGN_IDENTITY" \
 codesign --force --options runtime --timestamp --sign "$SIGN_IDENTITY" \
   --identifier "$BUNDLE_ID.core" "$APP_PATH/Contents/Resources/mihomo"
 # Refuse an ad-hoc or mismatched signing identity before producing a helper.
-python3 - "$APP_PATH" "$BUILD_DIR/CoreBuildIdentity.swift" "$TEAM_ID" <<'PY'
+python3 - "$APP_PATH" "$BUILD_DIR/CoreBuildIdentity.swift" "$TEAM_ID" "$APP_VERSION" "$APP_BUILD" <<'PY'
 import hashlib, json, pathlib, plistlib, subprocess, sys
 app, output, team = pathlib.Path(sys.argv[1]), pathlib.Path(sys.argv[2]), sys.argv[3]
 for binary in [app / 'Contents/Resources/node', app / 'Contents/Resources/mihomo']:
@@ -82,7 +84,7 @@ for binary in [app / 'Contents/Resources/node', app / 'Contents/Resources/mihomo
         raise SystemExit('Signing requires a matching Developer ID Application identity; helper validation was not relaxed.')
 digest = hashlib.sha256((app / 'Contents/Resources/mihomo').read_bytes()).hexdigest()
 output.write_text('enum CoreBuildIdentity {\n static let sha256 = ' + json.dumps(digest) + '\n static let version = "1.19.32"\n static let teamIdentifier = ' + json.dumps(team) + '\n}\n')
-info = {'CFBundleIdentifier':'io.ccmiss.app','CFBundleName':'ccmiss','CFBundleDisplayName':'ccmiss','CFBundleExecutable':'AccountProxySwitcher','CFBundlePackageType':'APPL','CFBundleShortVersionString':'2.6.1','CFBundleVersion':'21','LSMinimumSystemVersion':'13.5','LSApplicationCategoryType':'public.app-category.utilities','NSHighResolutionCapable':True,'NSPrincipalClass':'NSApplication','CFBundleIconFile':'AppIcon'}
+info = {'CFBundleIdentifier':'io.ccmiss.app','CFBundleName':'ccmiss','CFBundleDisplayName':'ccmiss','CFBundleExecutable':'AccountProxySwitcher','CFBundlePackageType':'APPL','CFBundleShortVersionString':sys.argv[4],'CFBundleVersion':sys.argv[5],'LSMinimumSystemVersion':'13.5','LSApplicationCategoryType':'public.app-category.utilities','NSHighResolutionCapable':True,'NSPrincipalClass':'NSApplication','CFBundleIconFile':'AppIcon'}
 (app / 'Contents/Info.plist').write_bytes(plistlib.dumps(info))
 PY
 cp "$PROJECT_DIR/Sources/AccountProxyService/io.ccmiss.app.network-service.plist" \
@@ -92,6 +94,7 @@ for SOURCE in "$PROJECT_DIR"/Sources/AccountProxyService/*.swift; do
   if [[ "$(basename "$SOURCE")" != CoreBuildIdentity.swift ]]; then HELPER_SOURCES+=("$SOURCE"); fi
 done
 xcrun swiftc -swift-version 5 -module-name AccountProxyService -O -whole-module-optimization \
+  -file-prefix-map "$PROJECT_DIR=/ccmiss" -debug-prefix-map "$PROJECT_DIR=/ccmiss" \
   -target arm64-apple-macosx13.5 -sdk "$SDK_PATH" \
   -framework Foundation -framework Security -framework SystemConfiguration \
   "${HELPER_SOURCES[@]}" "$BUILD_DIR/CoreBuildIdentity.swift" \
@@ -99,6 +102,7 @@ xcrun swiftc -swift-version 5 -module-name AccountProxyService -O -whole-module-
 codesign --force --options runtime --timestamp --sign "$SIGN_IDENTITY" \
   --identifier "$BUNDLE_ID.network-service" "$APP_PATH/Contents/Library/HelperTools/AccountProxyService"
 xcrun swiftc -swift-version 5 -module-name AccountProxySwitcher -O -whole-module-optimization \
+  -file-prefix-map "$PROJECT_DIR=/ccmiss" -debug-prefix-map "$PROJECT_DIR=/ccmiss" \
   -target arm64-apple-macosx13.5 -sdk "$SDK_PATH" \
   -framework SwiftUI -framework AppKit -framework ServiceManagement \
   "$PROJECT_DIR"/Sources/AccountProxySwitcher/*.swift \
@@ -106,6 +110,8 @@ xcrun swiftc -swift-version 5 -module-name AccountProxySwitcher -O -whole-module
 xcrun swift "$PROJECT_DIR/Tools/generate-icon.swift" "$PROJECT_DIR/Resources/Brand/ccmiss-logo.png" "$BUILD_DIR/ccmiss.iconset"
 /usr/bin/iconutil -c icns "$BUILD_DIR/ccmiss.iconset" -o "$BUILD_DIR/AppIcon.icns"
 cp "$BUILD_DIR/AppIcon.icns" "$APP_PATH/Contents/Resources/AppIcon.icns"
+# Build artifacts must not inherit Finder, quarantine or provenance metadata.
+/usr/bin/xattr -cr "$APP_PATH"
 codesign --force --options runtime --timestamp --sign "$SIGN_IDENTITY" --identifier "$BUNDLE_ID" "$APP_PATH"
 codesign --verify --deep --strict "$APP_PATH"
 printf 'Built signed app: %s\nNo application was installed and no network settings were changed.\n' "$APP_PATH"

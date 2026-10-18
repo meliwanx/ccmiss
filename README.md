@@ -14,6 +14,19 @@ Built for Claude, Claude Code, and Anthropic services, ccmiss brings network env
 
 **Add a proxy. Prepare once. Switch when you need to.**
 
+## Download for macOS
+
+**[Download ccmiss 2.6.2 for Apple Silicon (.dmg)](https://github.com/meliwanx/ccmiss/releases/download/v2.6.2/ccmiss-2.6.2-macos-arm64.dmg)** · [Release notes and SHA-256 checksums](https://github.com/meliwanx/ccmiss/releases/tag/v2.6.2)
+
+Requires **Apple Silicon (M1 or later) and macOS 13.5 or later**. Intel Macs are not supported by this release. The app interface is in Simplified Chinese.
+
+1. Open the DMG and drag **ccmiss.app** into **Applications**.
+2. Open ccmiss and add your own SOCKS5 proxy. Fresh installations contain no saved accounts or proxy profiles. Download users do not need their own developer certificate.
+3. Open **Software Settings** to prepare this Mac once. Standalone networking requires your explicit approval of the macOS background service; Clash is optional. Browser WebRTC setup is separate and may require closing the browser or granting file-access permission.
+4. Select a profile, enable it, and check the observed Claude exit IP.
+
+**Signing:** this release is Developer ID signed, but **not Apple notarized**. macOS may prevent the first launch. After verifying the download and deciding to trust it, follow [Apple's instructions](https://support.apple.com/en-us/102445) through **System Settings → Privacy & Security → Open Anyway**, if offered. Keep macOS security protections enabled. The package includes the public signing certificate needed to verify the publisher; it contains no signing private key or preconfigured personal data.
+
 ## A look inside
 
 The app interface is currently in Simplified Chinese. Account details in these screenshots have been redacted.
@@ -129,7 +142,7 @@ ccmiss is an independent project and is not affiliated with or endorsed by Anthr
 
 ## Build from source
 
-This repository provides source code and build instructions. It does not include personal runtime settings, proxy credentials, conversation backups, local handoff records, signing certificates, or prebuilt application packages.
+This repository provides source code and build instructions. The source tree does not include personal runtime settings, proxy credentials, conversation backups, local handoff records, or signing keys. Prebuilt macOS packages are distributed separately through [GitHub Releases](https://github.com/meliwanx/ccmiss/releases).
 
 Current target: **Apple Silicon, macOS 13.5 or later**. The application interface is currently in Simplified Chinese; bilingual documentation does not imply an English app interface.
 
@@ -142,11 +155,12 @@ export ACCOUNT_PROXY_SIGN_IDENTITY='Developer ID Application: YOUR NAME (YOUR_TE
 export ACCOUNT_PROXY_TEAM_ID='YOUR_TEAM_ID'
 
 ./build.sh
+./Tools/package-release.sh
 ```
 
 Dependencies are prepared under `.deps/darwin-arm64/`. Use `ACCOUNT_PROXY_NODE` to select a Node.js executable if needed; the build checks its supported version and architecture. The output is `dist/ccmiss.app`.
 
-Building does not register the service or switch the current network. A developer's signing identity is required for the supported privileged-service workflow; unsigned source checks are not an unsigned TUN installation method. Developer ID signing and Apple notarization are separate; the build does not submit anything to Apple for notarization.
+Building and packaging do not register the service or switch the current network. Packaging creates a signed DMG plus `SHA256SUMS` in `release/`. A developer's signing identity is required for the supported privileged-service workflow; unsigned source checks are not an unsigned TUN installation method. Developer ID signing and Apple notarization are separate; these scripts do not submit anything to Apple for notarization.
 
 To try your build, place it in `/Applications`, open it, add your own proxy, and follow the setup checks. Stop ccmiss networking and confirm restoration before removing the app or disabling its background service.
 

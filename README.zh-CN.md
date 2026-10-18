@@ -14,6 +14,19 @@
 
 **添加代理，初始化一次，按账号一键切换。**
 
+## 下载 macOS 版
+
+**[下载 ccmiss 2.6.2 · Apple Silicon 安装包（.dmg）](https://github.com/meliwanx/ccmiss/releases/download/v2.6.2/ccmiss-2.6.2-macos-arm64.dmg)** · [发行说明与 SHA-256 校验值](https://github.com/meliwanx/ccmiss/releases/tag/v2.6.2)
+
+需要 **Apple Silicon（M1 或更新芯片）和 macOS 13.5 或更新版本**。本次发行不支持 Intel Mac，应用界面目前为简体中文。
+
+1. 打开 DMG，将 **ccmiss.app** 拖到“应用程序”。
+2. 打开 ccmiss，添加自己的 SOCKS5。首次安装不含预置账号或代理配置，下载使用无需自行准备开发者证书。
+3. 在“软件设置”中为这台 Mac 初始化一次。独立网络模式需要你主动批准 macOS 后台服务，Clash 为可选项。浏览器 WebRTC 单独设置，可能需要完全退出浏览器或授予文件访问权限。
+4. 选择配置并启用，查看 Claude 实测出口 IP。
+
+**签名状态：**本次安装包已使用 Developer ID 签名，**尚未通过 Apple 公证**，首次打开可能被 macOS 阻止。核对下载并决定信任后，可按 [Apple 官方说明](https://support.apple.com/zh-cn/102445)，在系统提供该选项时通过“系统设置 → 隐私与安全性 → 仍要打开”批准这一个应用。请保持 macOS 安全保护开启。包内保留验证发布者所需的公开签名证书，不含签名私钥或个人预置配置。
+
 ## 界面预览
 
 应用界面目前为简体中文，以下截图中的账号资料已打码。
@@ -129,7 +142,7 @@ ccmiss 是独立项目，与 Anthropic、Cloudflare、Stripe 或 Clash Verge Rev
 
 ## 从源码构建
 
-本仓库提供源码及构建说明，不包含个人运行配置、代理凭据、对话备份、本机交接记录、签名证书或预编译应用包。
+本仓库提供源码及构建说明。源码树不包含个人运行配置、代理凭据、对话备份、本机交接记录或签名密钥；预编译 macOS 安装包通过 [GitHub Releases](https://github.com/meliwanx/ccmiss/releases) 单独提供。
 
 当前目标：**Apple Silicon，macOS 13.5 或更新版本**。应用界面目前为简体中文；中英文说明文档不代表应用界面已完成英语适配。
 
@@ -142,11 +155,12 @@ export ACCOUNT_PROXY_SIGN_IDENTITY='Developer ID Application: YOUR NAME (YOUR_TE
 export ACCOUNT_PROXY_TEAM_ID='YOUR_TEAM_ID'
 
 ./build.sh
+./Tools/package-release.sh
 ```
 
 依赖保存在 `.deps/darwin-arm64/`。必要时可通过 `ACCOUNT_PROXY_NODE` 指定 Node.js 可执行文件，构建会检查支持的版本与架构。产物为 `dist/ccmiss.app`。
 
-构建不会注册后台服务或切换当前网络。受支持的特权服务流程需要开发者签名；不签名运行源码检查，不等于支持免签安装 TUN。Developer ID 签名与 Apple 公证是两个步骤，构建不会自动向 Apple 提交公证。
+构建和打包不会注册后台服务或切换当前网络。打包会在 `release/` 生成已签名 DMG 和 `SHA256SUMS`。受支持的特权服务流程需要开发者签名；不签名运行源码检查，不等于支持免签安装 TUN。Developer ID 签名与 Apple 公证是两个步骤，这些脚本不会自动向 Apple 提交公证。
 
 体验自己的构建时，将应用放入 `/Applications`，添加自己的代理，再按软件设置完成检查。移除应用或关闭后台服务前，请先在应用内停用网络并确认恢复。
 
