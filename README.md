@@ -36,7 +36,7 @@ The app interface is currently in Simplified Chinese. Account details in these s
 *Account workspace: network status and profile controls in one compact view.*
 
 <details>
-<summary>More screenshots: adding a profile and Claude Code tools</summary>
+<summary>More screenshots: profiles, Claude Code tools, and an external network check</summary>
 
 **Add a SOCKS5 profile**
 
@@ -49,6 +49,12 @@ The app interface is currently in Simplified Chinese. Account details in these s
 ![ccmiss Claude Code tools for local conversation backups and installation maintenance](docs/images/claude-code-tools.png)
 
 *Browse local conversation backups and access user-initiated maintenance tools.*
+
+**External network check example**
+
+![External ip.net.coffee Claude network check, with IP addresses redacted](docs/images/claude-network-check.png)
+
+*An external [ip.net.coffee](https://ip.net.coffee/claude/) page, with IP addresses redacted. The displayed score reflects only that website's result for this check. It is not a built-in ccmiss score, an official Anthropic risk assessment, or a guarantee against account restrictions.*
 
 </details>
 

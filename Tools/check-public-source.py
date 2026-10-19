@@ -26,6 +26,7 @@ PUBLIC_PNG_ASSETS = {
     "docs/images/account-workspace.png",
     "docs/images/add-profile.png",
     "docs/images/claude-code-tools.png",
+    "docs/images/claude-network-check.png",
 }
 DOC_NETS = tuple(ipaddress.ip_network(value) for value in
                 ("192.0.2.0/24", "198.51.100.0/24", "203.0.113.0/24", "2001:db8::/32"))

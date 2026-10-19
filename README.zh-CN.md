@@ -36,7 +36,7 @@
 *账号工作区：在紧凑界面中查看网络状态、管理账号配置。*
 
 <details>
-<summary>展开查看：添加配置与 Claude Code 工具</summary>
+<summary>展开查看：添加配置、Claude Code 工具与外部网络检测</summary>
 
 **添加 SOCKS5 配置**
 
@@ -49,6 +49,12 @@
 ![ccmiss Claude Code 工具，用于本地对话备份与安装维护](docs/images/claude-code-tools.png)
 
 *查看本地对话备份，并按需主动执行维护。*
+
+**第三方网络检测示例**
+
+![ip.net.coffee 外部 Claude 网络检测页面，IP 地址已打码](docs/images/claude-network-check.png)
+
+*外部网站 [ip.net.coffee](https://ip.net.coffee/claude/) 的检测页面，IP 地址已打码。图中评分仅代表该网站当次检测结果，不是 ccmiss 内置评分、Anthropic 官方风控结论或防封保证。*
 
 </details>
 

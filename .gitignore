@@ -31,6 +31,7 @@
 !/docs/images/account-workspace.png
 !/docs/images/add-profile.png
 !/docs/images/claude-code-tools.png
+!/docs/images/claude-network-check.png
 !/.github/
 !/.github/**/
 !/.github/**/*.yml
